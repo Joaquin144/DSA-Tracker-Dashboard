@@ -1,6 +1,8 @@
 import 'package:dsa_tracker/common/themes/theme_cubit.dart';
-import 'package:dsa_tracker/dashboard/blocs/task_bloc.dart';
-import 'package:dsa_tracker/dashboard/blocs/task_event.dart';
+import 'package:dsa_tracker/dashboard/blocs/tag/tag_bloc.dart';
+import 'package:dsa_tracker/dashboard/blocs/task/task_bloc.dart';
+import 'package:dsa_tracker/dashboard/blocs/task/task_event.dart';
+import 'package:dsa_tracker/dashboard/repositories/tag_repository.dart';
 import 'package:dsa_tracker/dashboard/repositories/task_repository.dart';
 import 'package:dsa_tracker/dashboard/services/actual/task_service_impl.dart';
 import 'package:dsa_tracker/dashboard/ui/task_tracker_dashboard.dart';
@@ -15,6 +17,7 @@ class TaskTrackerApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final TaskRepository taskRepository = TaskRepository(TaskServiceImpl());
+    final TagRepository tagRepository = TagRepository();
 
     return MultiBlocProvider(
       providers: [
@@ -24,6 +27,8 @@ class TaskTrackerApp extends StatelessWidget {
         BlocProvider(
           create: (context) => TaskBloc(taskRepository)..add(FetchTasks()),
         ),
+        BlocProvider(
+            create: (context) => TagBloc(tagRepository)..add(FetchTags())),
       ],
       child: BlocBuilder<ThemeCubit, ThemeData>(
         builder: (context, theme) {
