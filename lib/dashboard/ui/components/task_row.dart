@@ -1,4 +1,3 @@
-// TaskRow widget to display individual tasks
 import 'package:flutter/material.dart';
 
 class TaskRow extends StatelessWidget {
@@ -32,29 +31,23 @@ class TaskRow extends StatelessWidget {
               child: Text(
                 taskName,
                 style: TextStyle(
-                    color: Colors.blue, decoration: TextDecoration.underline),
+                  color: Colors.blue,
+                  decoration: TextDecoration.underline,
+                ),
               ),
             ),
           ),
           Expanded(
             flex: 3,
-            child: Wrap(
-              spacing: 4.0,
-              children: tags.map((tag) => Chip(label: Text(tag))).toList(),
-            ),
+            child: Text(tags.join(', ')),
           ),
-          Expanded(flex: 2, child: Text(approach)),
+          Expanded(
+            flex: 2,
+            child: Text(approach),
+          ),
           Expanded(
             flex: 1,
-            child: Row(
-              children: List.generate(5, (index) {
-                return Icon(
-                  index < rating ? Icons.star : Icons.star_border,
-                  color: Colors.amber,
-                  size: 16,
-                );
-              }),
-            ),
+            child: Text(rating.toString()),
           ),
         ],
       ),
