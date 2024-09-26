@@ -51,7 +51,7 @@ class TaskDashboard extends StatelessWidget {
                             itemBuilder: (context, index) {
                               final task = tasks[index];
                               return TaskRow(
-                                serialNo: task.id,
+                                serialNo: index + 1,
                                 taskName: task.name,
                                 tags: task.tags ?? [],
                                 approach: task.approach,
