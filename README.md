@@ -96,3 +96,10 @@ Easily filter your DSA problems by tags.
 
 ![Theme 2 Screenshot](https://github.com/user-attachments/assets/0de0d949-4a86-4e41-bd30-b443816cdc22)
 ![image](https://github.com/user-attachments/assets/806f71a0-ce6e-4823-b25b-4db18d74e033)
+
+## Profile
+- [LinkedIn](https://www.linkedin.com/in/vibhu-26m): Let's connect and network on LinkedIn.
+
+- [GitHub](https://github.com/Joaquin144): Check out my repositories and contributions on GitHub.
+
+- [Play Store](https://play.google.com/store/apps/developer?id=DevCommOP): Explore my apps on the Play Store.
