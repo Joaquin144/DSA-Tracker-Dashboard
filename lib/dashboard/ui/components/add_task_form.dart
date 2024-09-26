@@ -1,5 +1,5 @@
-import 'package:dsa_tracker/dashboard/blocs/task_bloc.dart';
-import 'package:dsa_tracker/dashboard/blocs/task_event.dart';
+import 'package:dsa_tracker/dashboard/blocs/task/task_bloc.dart';
+import 'package:dsa_tracker/dashboard/blocs/task/task_event.dart';
 import 'package:dsa_tracker/dashboard/models/task_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

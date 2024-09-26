@@ -1,6 +1,8 @@
 // Sidebar widget for tag filtering
-import 'package:dsa_tracker/dashboard/blocs/task_bloc.dart';
-import 'package:dsa_tracker/dashboard/blocs/task_event.dart';
+import 'package:dsa_tracker/dashboard/blocs/tag/tag_bloc.dart';
+import 'package:dsa_tracker/dashboard/blocs/task/task_bloc.dart';
+import 'package:dsa_tracker/dashboard/blocs/task/task_event.dart';
+import 'package:dsa_tracker/dashboard/models/tag_model.dart';
 import 'package:dsa_tracker/settings/settings_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -38,18 +40,33 @@ class MainSidebar extends StatelessWidget {
               taskBloc.add(FilterTasksByTag('All Tasks'));
             },
           ),
-          ListTile(
-            leading: Icon(Icons.web),
-            title: Text('UI/UX Design'),
-            onTap: () {
-              taskBloc.add(FilterTasksByTag('UI/UX Design'));
-            },
-          ),
-          ListTile(
-            leading: Icon(Icons.code),
-            title: Text('Backend'),
-            onTap: () {
-              taskBloc.add(FilterTasksByTag('Backend'));
+          BlocBuilder<TagBloc, TagState>(
+            builder: (context, state) {
+              if (state is TagLoading) {
+                return Center(child: CircularProgressIndicator());
+              } else if (state is TagLoaded) {
+                return Column(
+                  children: state.tags.map((TagModel tag) {
+                    return ListTile(
+                      leading: Icon(Icons.label),
+                      title: Text(tag.name),
+                      onTap: () {
+                        // Filter tasks based on selected tag
+                        //Navigator.pop(context);--> Once make this drawer then do pop()
+                        // Trigger the event to filter tasks
+                        context
+                            .read<TaskBloc>()
+                            .add(FilterTasksByTag(tag.name));
+                      },
+                    );
+                  }).toList(),
+                );
+              } else if (state is TagError) {
+                return ListTile(
+                  title: Text('Failed to load tags'),
+                );
+              }
+              return Container();
             },
           ),
         ],
