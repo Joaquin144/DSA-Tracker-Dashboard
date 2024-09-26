@@ -1,16 +1,28 @@
 import 'package:flutter/material.dart';
 
-class MainAppBar extends AppBar {
+class MainAppBar extends StatefulWidget implements PreferredSizeWidget {
+  MainAppBar({super.key})
+      : preferredSize = Size.fromHeight(kToolbarHeight),
+        super();
+
+  @override
+  final Size preferredSize; // default is 56.0
+
+  @override
+  _MainAppBarState createState() => _MainAppBarState();
+}
+
+class _MainAppBarState extends State<MainAppBar> {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      title: Text('DSA Tracker'),
+      title: const Text('DSA Tracker'),
       actions: [
-        IconButton(icon: Icon(Icons.notifications), onPressed: () {}),
-        CircleAvatar(
+        IconButton(icon: const Icon(Icons.notifications), onPressed: () {}),
+        const CircleAvatar(
           backgroundImage: AssetImage('assets/images/avatar.png'),
         ),
-        SizedBox(width: 10),
+        const SizedBox(width: 10),
       ],
     );
   }

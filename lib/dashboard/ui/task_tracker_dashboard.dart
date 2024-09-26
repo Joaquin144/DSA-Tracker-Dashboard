@@ -2,13 +2,14 @@ import 'package:dsa_tracker/dashboard/blocs/task/task_bloc.dart';
 import 'package:dsa_tracker/dashboard/blocs/task/task_state.dart';
 import 'package:dsa_tracker/dashboard/models/task_model.dart';
 import 'package:dsa_tracker/dashboard/ui/components/add_task_fab.dart';
-import 'package:dsa_tracker/dashboard/ui/components/main_app_bar.dart';
 import 'package:dsa_tracker/dashboard/ui/components/main_sidebar.dart';
 import 'package:dsa_tracker/dashboard/ui/components/task_row.dart';
 import 'package:dsa_tracker/dashboard/ui/components/tasks_header_row.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+import 'components/main_app_bar.dart';
 
 class TaskDashboard extends StatelessWidget {
   const TaskDashboard({super.key});
