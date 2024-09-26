@@ -1,7 +1,8 @@
-import 'package:dsa_tracker/dashboard/blocs/task_bloc.dart';
-import 'package:dsa_tracker/dashboard/blocs/task_state.dart';
+import 'package:dsa_tracker/dashboard/blocs/task/task_bloc.dart';
+import 'package:dsa_tracker/dashboard/blocs/task/task_state.dart';
 import 'package:dsa_tracker/dashboard/models/task_model.dart';
-import 'package:dsa_tracker/dashboard/ui/components/add_task_form.dart';
+import 'package:dsa_tracker/dashboard/ui/components/add_task_fab.dart';
+import 'package:dsa_tracker/dashboard/ui/components/main_app_bar.dart';
 import 'package:dsa_tracker/dashboard/ui/components/main_sidebar.dart';
 import 'package:dsa_tracker/dashboard/ui/components/task_row.dart';
 import 'package:dsa_tracker/dashboard/ui/components/tasks_header_row.dart';
@@ -10,19 +11,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class TaskDashboard extends StatelessWidget {
+  const TaskDashboard({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('DSA Tracker'),
-        actions: [
-          IconButton(icon: Icon(Icons.notifications), onPressed: () {}),
-          CircleAvatar(
-            backgroundImage: AssetImage('assets/images/avatar.png'),
-          ),
-          SizedBox(width: 10),
-        ],
-      ),
+      appBar: MainAppBar(),
       body: Row(
         children: [
           // Sidebar
@@ -34,13 +28,13 @@ class TaskDashboard extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  TasksHeaderRow(),
-                  Divider(),
+                  const TasksHeaderRow(),
+                  const Divider(),
                   // Task List
                   BlocBuilder<TaskBloc, TaskState>(
                     builder: (context, state) {
                       if (state is TaskLoading) {
-                        return Center(child: CircularProgressIndicator());
+                        return const Center(child: CircularProgressIndicator());
                       } else if (state is TaskLoaded || state is TaskFiltered) {
                         List<TaskModel> tasks = (state is TaskLoaded)
                             ? state.tasks
@@ -64,7 +58,7 @@ class TaskDashboard extends StatelessWidget {
                       } else if (state is TaskError) {
                         return Center(child: Text(state.message));
                       } else {
-                        return Center(child: Text('No tasks available'));
+                        return const Center(child: Text('No tasks available'));
                       }
                     },
                   ),
@@ -74,11 +68,7 @@ class TaskDashboard extends StatelessWidget {
           ),
         ],
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => _showAddTaskModal(context),
-        child: Icon(Icons.add),
-        tooltip: 'Add Task',
-      ),
+      floatingActionButton: const AddTaskFloatingActionButton(),
     );
   }
 
@@ -90,20 +80,5 @@ class TaskDashboard extends StatelessWidget {
     } else {
       throw 'Could not launch $urlString';
     }
-  }
-
-  void _showAddTaskModal(BuildContext context) {
-    showModalBottomSheet(
-      isScrollControlled: true,
-      context: context,
-      builder: (BuildContext context) {
-        return Padding(
-          padding: EdgeInsets.only(
-            bottom: MediaQuery.of(context).viewInsets.bottom,
-          ),
-          child: AddTaskForm(),
-        );
-      },
-    );
   }
 }
