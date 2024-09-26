@@ -17,7 +17,7 @@ class TaskDashboard extends StatelessWidget {
         actions: [
           IconButton(icon: Icon(Icons.notifications), onPressed: () {}),
           CircleAvatar(
-            backgroundImage: AssetImage('assets/avatar.png'),
+            backgroundImage: AssetImage('assets/images/avatar.png'),
           ),
           SizedBox(width: 10),
         ],
