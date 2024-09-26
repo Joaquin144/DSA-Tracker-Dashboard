@@ -1,5 +1,5 @@
-import '../models/task_model.dart';
-import '../services/task_service.dart';
+import 'package:dsa_tracker/dashboard/models/task_model.dart';
+import 'package:dsa_tracker/dashboard/services/task_service.dart';
 
 class TaskRepository {
   final TaskService _taskService;
