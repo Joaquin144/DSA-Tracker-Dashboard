@@ -19,7 +19,7 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
         _allTasks = tasks; // Cache tasks for filtering
         emit(TaskLoaded(tasks));
       } catch (e) {
-        emit(TaskError('Failed to fetch tasks'));
+        emit(TaskError('Failed to fetch tasks: $e'));
       }
     });
 
