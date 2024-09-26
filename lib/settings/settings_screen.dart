@@ -2,9 +2,19 @@ import 'package:dsa_tracker/common/themes/theme_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class SettingsScreen extends StatelessWidget {
+class SettingsScreen extends StatefulWidget {
+  @override
+  _SettingsScreenState createState() => _SettingsScreenState();
+}
+
+class _SettingsScreenState extends State<SettingsScreen> {
+  String selectedColor = 'Blue';
+  AppThemeMode selectedMode = AppThemeMode.Light;
+
   @override
   Widget build(BuildContext context) {
+    final themeCubit = context.read<ThemeCubit>();
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Settings'),
@@ -21,69 +31,65 @@ class SettingsScreen extends StatelessWidget {
               decoration: InputDecoration(labelText: 'Name'),
             ),
             SizedBox(height: 20),
-            // Theme Selection Section
             Text('Theme', style: TextStyle(fontSize: 20)),
             SizedBox(height: 10),
+            // Dropdown for selecting Color
             BlocBuilder<ThemeCubit, ThemeData>(
               builder: (context, theme) {
-                return Column(
-                  children: AppTheme.values.map((appTheme) {
-                    return RadioListTile<AppTheme>(
-                      title: Text(_getThemeName(appTheme)),
-                      value: appTheme,
-                      groupValue: _getCurrentTheme(theme),
-                      onChanged: (AppTheme? value) {
-                        if (value != null) {
-                          context
-                              .read<ThemeCubit>()
-                              .updateTheme(value); // Save theme to prefs
-                        }
-                      },
+                return DropdownButton<String>(
+                  value: selectedColor,
+                  items: themeCubit.appColors.keys.map((String colorName) {
+                    return DropdownMenuItem<String>(
+                      value: colorName,
+                      child: Text(colorName),
                     );
                   }).toList(),
+                  onChanged: (String? newColor) {
+                    if (newColor != null) {
+                      setState(() {
+                        selectedColor = newColor;
+                      });
+                    }
+                  },
                 );
               },
+            ),
+            SizedBox(height: 20),
+            // Toggle Button for Light/Dark Mode with Sun/Moon icon
+            Row(
+              children: [
+                Text('Mode: '),
+                IconButton(
+                  icon: selectedMode == AppThemeMode.Light
+                      ? Icon(Icons.wb_sunny, color: Colors.yellow)
+                      : Icon(Icons.nights_stay, color: Colors.blueGrey),
+                  onPressed: () {
+                    setState(() {
+                      // Toggle the theme mode
+                      selectedMode = selectedMode == AppThemeMode.Light
+                          ? AppThemeMode.Dark
+                          : AppThemeMode.Light;
+                    });
+                  },
+                ),
+                Text(
+                  selectedMode == AppThemeMode.Light
+                      ? 'Light Mode'
+                      : 'Dark Mode',
+                ),
+              ],
+            ),
+            SizedBox(height: 20),
+            // Save Button to Apply Selected Theme and Mode
+            ElevatedButton(
+              onPressed: () {
+                themeCubit.updateTheme(selectedColor, selectedMode);
+              },
+              child: Text('Save Theme'),
             ),
           ],
         ),
       ),
     );
-  }
-
-  // Helper function to determine the currently selected theme
-  AppTheme _getCurrentTheme(ThemeData theme) {
-    return appThemeData.entries.firstWhere((entry) => entry.value == theme).key;
-  }
-
-  // Helper function to get readable theme names
-  String _getThemeName(AppTheme appTheme) {
-    switch (appTheme) {
-      case AppTheme.Light:
-        return 'Light Theme';
-      case AppTheme.Dark:
-        return 'Dark Theme';
-      case AppTheme.Yellow:
-        return 'Yellow Theme';
-      case AppTheme.Red:
-        return 'Red Theme';
-      case AppTheme.Green:
-        return 'Green Theme';
-      case AppTheme.Purple:
-        return 'Purple Theme';
-      case AppTheme.Orange:
-        return 'Orange Theme';
-      case AppTheme.Pink:
-        return 'Pink Theme';
-      case AppTheme.Cyan:
-        return 'Cyan Theme';
-      case AppTheme.Indigo:
-        return 'Indigo Theme';
-      case AppTheme.Brown:
-        return 'Brown Theme';
-      case AppTheme.Teal:
-        return 'Teal Theme';
-      default:
-        return 'Unknown Theme';
-    }
   }
 }

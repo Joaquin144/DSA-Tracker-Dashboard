@@ -4,6 +4,7 @@ import 'package:dsa_tracker/dashboard/models/task_model.dart';
 import 'package:dsa_tracker/dashboard/ui/components/add_task_form.dart';
 import 'package:dsa_tracker/dashboard/ui/components/main_sidebar.dart';
 import 'package:dsa_tracker/dashboard/ui/components/task_row.dart';
+import 'package:dsa_tracker/dashboard/ui/components/tasks_header_row.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -13,7 +14,7 @@ class TaskDashboard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('TaskFlow'),
+        title: Text('DSA Tracker'),
         actions: [
           IconButton(icon: Icon(Icons.notifications), onPressed: () {}),
           CircleAvatar(
@@ -33,11 +34,8 @@ class TaskDashboard extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    'All Tasks',
-                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                  ),
-                  SizedBox(height: 10),
+                  TasksHeaderRow(),
+                  Divider(),
                   // Task List
                   BlocBuilder<TaskBloc, TaskState>(
                     builder: (context, state) {

@@ -8,6 +8,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class TaskTrackerApp extends StatelessWidget {
+  final ThemeCubit themeCubit;
+
+  TaskTrackerApp({required this.themeCubit});
+
   @override
   Widget build(BuildContext context) {
     final TaskRepository taskRepository = TaskRepository(TaskServiceImpl());
@@ -15,7 +19,7 @@ class TaskTrackerApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (context) => ThemeCubit()..loadThemeFromPrefs(),
+          create: (context) => themeCubit,
         ),
         BlocProvider(
           create: (context) => TaskBloc(taskRepository)..add(FetchTasks()),

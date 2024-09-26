@@ -2,78 +2,66 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-// Define available themes with additional color themes
-enum AppTheme {
-  Light,
-  Dark,
-  Yellow,
-  Red,
-  Green,
-  Purple,
-  Orange,
-  Pink,
-  Cyan,
-  Indigo,
-  Brown,
-  Teal,
-}
-
-// Mapping AppTheme to actual ThemeData
-final appThemeData = {
-  AppTheme.Light: ThemeData(
-    brightness: Brightness.light,
-    primarySwatch: Colors.blue,
-  ),
-  AppTheme.Dark: ThemeData(
-    brightness: Brightness.dark,
-    primarySwatch: Colors.grey,
-  ),
-  AppTheme.Yellow: ThemeData(
-    primarySwatch: Colors.yellow,
-  ),
-  AppTheme.Red: ThemeData(
-    primarySwatch: Colors.red,
-  ),
-  AppTheme.Green: ThemeData(
-    primarySwatch: Colors.green,
-  ),
-  AppTheme.Purple: ThemeData(
-    primarySwatch: Colors.purple,
-  ),
-  AppTheme.Orange: ThemeData(
-    primarySwatch: Colors.orange,
-  ),
-  AppTheme.Pink: ThemeData(
-    primarySwatch: Colors.pink,
-  ),
-  AppTheme.Cyan: ThemeData(
-    primarySwatch: Colors.cyan,
-  ),
-  AppTheme.Indigo: ThemeData(
-    primarySwatch: Colors.indigo,
-  ),
-  AppTheme.Brown: ThemeData(
-    primarySwatch: Colors.brown,
-  ),
-  AppTheme.Teal: ThemeData(
-    primarySwatch: Colors.teal,
-  ),
-};
+enum AppThemeMode { Light, Dark }
 
 class ThemeCubit extends Cubit<ThemeData> {
-  ThemeCubit() : super(appThemeData[AppTheme.Light]!);
+  ThemeCubit() : super(_defaultTheme);
 
-  // Load theme from SharedPreferences at startup
-  Future<void> loadThemeFromPrefs() async {
+  static const String _themeColorKey = 'theme_color';
+  static const String _themeModeKey = 'theme_mode';
+
+  // Default Theme (can set to Light and Blue)
+  static final ThemeData _defaultTheme = ThemeData(
+    primarySwatch: Colors.blue,
+    brightness: Brightness.light,
+  );
+
+  // Map of available colors
+  final Map<String, MaterialColor> appColors = {
+    'Blue': Colors.blue,
+    'Yellow': Colors.yellow,
+    'Red': Colors.red,
+    'Green': Colors.green,
+    'Purple': Colors.purple,
+    'Orange': Colors.orange,
+    'Pink': Colors.pink,
+    'Cyan': Colors.cyan,
+    'Indigo': Colors.indigo,
+    'Brown': Colors.brown,
+    'Teal': Colors.teal,
+  };
+
+  // Update theme based on selected color and brightness mode
+  void updateTheme(String colorName, AppThemeMode mode) async {
     final prefs = await SharedPreferences.getInstance();
-    final themeIndex = prefs.getInt('theme') ?? 0; // Default to Light theme
-    updateTheme(AppTheme.values[themeIndex]);
+
+    // Save selected color and mode in SharedPreferences
+    await prefs.setString(_themeColorKey, colorName);
+    await prefs.setString(_themeModeKey, mode.toString());
+
+    // Get the selected color and mode
+    final MaterialColor selectedColor = appColors[colorName] ?? Colors.blue;
+    final Brightness selectedBrightness =
+        mode == AppThemeMode.Dark ? Brightness.dark : Brightness.light;
+
+    // Emit the new theme with the selected color and brightness
+    emit(ThemeData(
+      primarySwatch: selectedColor,
+      brightness: selectedBrightness,
+    ));
   }
 
-  // Update theme and save to SharedPreferences
-  void updateTheme(AppTheme theme) async {
-    emit(appThemeData[theme]!);
+  // Load theme from SharedPreferences on startup
+  Future<void> loadThemeFromPreferences() async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setInt('theme', theme.index); // Save theme index
+    final colorName = prefs.getString(_themeColorKey) ?? 'Blue';
+    final modeString =
+        prefs.getString(_themeModeKey) ?? AppThemeMode.Light.toString();
+
+    final AppThemeMode mode = modeString == AppThemeMode.Dark.toString()
+        ? AppThemeMode.Dark
+        : AppThemeMode.Light;
+
+    updateTheme(colorName, mode);
   }
 }
