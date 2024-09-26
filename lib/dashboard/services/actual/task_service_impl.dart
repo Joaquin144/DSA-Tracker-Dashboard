@@ -15,6 +15,7 @@ class TaskServiceImpl extends TaskService {
         tags: List<String>.from(data['tags']),
         approach: data['approach'],
         rating: data['rating'].toDouble(),
+        url: data['url'],
       );
     }).toList();
   }
@@ -26,6 +27,7 @@ class TaskServiceImpl extends TaskService {
       'tags': task.tags,
       'approach': task.approach,
       'rating': task.rating,
+      'url': task.url
     });
   }
 }

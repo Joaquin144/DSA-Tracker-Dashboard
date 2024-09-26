@@ -6,17 +6,21 @@ class TaskServiceMock extends TaskService {
     // Simulating network call or database call
     return [
       TaskModel(
-          id: 1,
-          name: 'Koko Eating Bananas',
-          tags: ['Binary Search'],
-          approach: 'Try Binary Search on Answer',
-          rating: 5.0),
+        id: 1,
+        name: 'Koko Eating Bananas',
+        tags: ['Binary Search'],
+        approach: 'Try Binary Search on Answer',
+        rating: 5.0,
+        url: 'https://leetcode.com/problems/koko-eating-bananas/',
+      ),
       TaskModel(
-          id: 2,
-          name: 'Max Islands',
-          tags: ['BFS', 'DFS', 'Graphs'],
-          approach: 'Start from all nodes and maintain islands count',
-          rating: 4.0),
+        id: 2,
+        name: 'Number of Islands',
+        tags: ['BFS', 'DFS', 'Graphs'],
+        approach: 'Start from all nodes and maintain islands count',
+        rating: 4.0,
+        url: 'https://leetcode.com/problems/number-of-islands/description/',
+      ),
       // Add more tasks
     ];
   }

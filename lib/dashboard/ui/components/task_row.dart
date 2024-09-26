@@ -4,16 +4,16 @@ class TaskRow extends StatelessWidget {
   final int serialNo;
   final String taskName;
   final List<String> tags;
-  final String approach;
-  final double rating;
+  final String? approach;
+  final double? rating;
   final VoidCallback onTaskClick;
 
   TaskRow({
     required this.serialNo,
     required this.taskName,
     required this.tags,
-    required this.approach,
-    required this.rating,
+    this.approach,
+    this.rating,
     required this.onTaskClick,
   });
 
@@ -43,11 +43,19 @@ class TaskRow extends StatelessWidget {
           ),
           Expanded(
             flex: 2,
-            child: Text(approach),
+            child: Text(approach ?? ''),
           ),
           Expanded(
             flex: 1,
-            child: Text(rating.toString()),
+            child: Row(
+              children: List.generate(5, (index) {
+                return Icon(
+                  index < (rating ?? 0) ? Icons.star : Icons.star_border,
+                  color: Colors.amber,
+                  size: 16,
+                );
+              }),
+            ),
           ),
         ],
       ),

@@ -1,3 +1,4 @@
+import 'package:dsa_tracker/common/themes/theme_cubit.dart';
 import 'package:dsa_tracker/dashboard/blocs/task_bloc.dart';
 import 'package:dsa_tracker/dashboard/blocs/task_event.dart';
 import 'package:dsa_tracker/dashboard/repositories/task_repository.dart';
@@ -11,16 +12,25 @@ class TaskTrackerApp extends StatelessWidget {
   Widget build(BuildContext context) {
     final TaskRepository taskRepository = TaskRepository(TaskServiceImpl());
 
-    return MaterialApp(
-      title: 'Task Tracker',
-      theme: ThemeData(
-        primarySwatch: Colors.yellow,
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => ThemeCubit()..loadThemeFromPrefs(),
+        ),
+        BlocProvider(
+          create: (context) => TaskBloc(taskRepository)..add(FetchTasks()),
+        ),
+      ],
+      child: BlocBuilder<ThemeCubit, ThemeData>(
+        builder: (context, theme) {
+          return MaterialApp(
+            title: 'Task Tracker',
+            theme: theme, // Apply the selected theme
+            home: TaskDashboard(),
+            debugShowCheckedModeBanner: false,
+          );
+        },
       ),
-      home: BlocProvider(
-        create: (context) => TaskBloc(taskRepository)..add(FetchTasks()),
-        child: TaskDashboard(),
-      ),
-      debugShowCheckedModeBanner: false,
     );
   }
 }

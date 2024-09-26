@@ -1,6 +1,7 @@
 // Sidebar widget for tag filtering
 import 'package:dsa_tracker/dashboard/blocs/task_bloc.dart';
 import 'package:dsa_tracker/dashboard/blocs/task_event.dart';
+import 'package:dsa_tracker/settings/settings_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -22,7 +23,11 @@ class MainSidebar extends StatelessWidget {
                     style:
                         TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
                 SizedBox(height: 10),
-                ElevatedButton(onPressed: () {}, child: Text('View profile'))
+                ElevatedButton(
+                    onPressed: () {
+                      _openSettings(context);
+                    },
+                    child: Text('View profile'))
               ],
             ),
           ),
@@ -49,6 +54,12 @@ class MainSidebar extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+
+  void _openSettings(BuildContext context) {
+    Navigator.of(context).push(
+      MaterialPageRoute(builder: (context) => SettingsScreen()),
     );
   }
 }
